@@ -1,0 +1,56 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b0d">
+  <meta name="description" content="StudyFlow — a calm, study-first personal planner for your HSC Commerce year.">
+  <title>STUDYFLOW — My Personal Life Planner</title>
+  <script type="module" crossorigin src="./assets/main-CsVgNiAQ.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-wUKvEVBz.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="StudyFlow dashboard">
+        <span class="brand-mark">S<span>.</span></span>
+        <span class="brand-copy"><strong>STUDYFLOW</strong><small>MY PERSONAL LIFE PLANNER</small></span>
+      </a>
+      <div class="side-label">YOUR SPACE</div>
+      <nav class="side-nav" id="side-nav" aria-label="Main navigation"></nav>
+      <div class="sidebar-bottom">
+        <div class="focus-note"><span class="focus-dot"></span><span>STUDY FIRST.<br><b>HEALTH ALWAYS.</b></span></div>
+        <button class="profile-button" id="sidebar-theme" type="button" aria-label="Toggle theme"><span class="avatar">SF</span><span><b>My StudyFlow</b><small>Personal workspace</small></span><span class="theme-glyph">◐</span></button>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">S<span>.</span></span><b>STUDYFLOW</b></div>
+        <div class="breadcrumb"><span>MY WORKSPACE</span><i>/</i><b id="page-crumb">DASHBOARD</b></div>
+        <div class="topbar-right"><span class="today-chip"><span class="live-dot"></span><span id="top-date">TODAY</span></span><button class="icon-button" id="top-theme" type="button" aria-label="Toggle light and dark theme">◐</button></div>
+      </header>
+      <section id="page" class="page-content" aria-live="polite"></section>
+      <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation"></nav>
+    </main>
+  </div>
+  <div id="app-update-banner" class="app-update-banner-container" hidden></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <input id="import-file" type="file" accept="application/json,.json" hidden>
+  <script>
+    if (window.location.protocol === "file:") {
+      const notice = document.createElement("section");
+      notice.className = "card section-card";
+      const eyebrow = document.createElement("div");
+      eyebrow.className = "eyebrow";
+      eyebrow.textContent = "OPEN STUDYFLOW THROUGH VITE";
+      const heading = document.createElement("h1");
+      heading.textContent = "This app needs a local web server.";
+      const message = document.createElement("p");
+      message.className = "muted";
+      message.textContent = "Opening index.html directly with a file:// URL prevents the browser from resolving the app's JavaScript modules. In this project folder, run npm run dev and open the local URL shown in the terminal. Your saved planner data has not been changed.";
+      notice.append(eyebrow, heading, message);
+      document.getElementById("page").replaceChildren(notice);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b0d">
+  <title>StudyFlow · Export existing browser data</title>
+  <style>:root{--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark;color:#f0f3f3;background:#090b0d;font-family:DM Sans,Segoe UI,sans-serif}*{box-sizing:border-box}body{background:radial-gradient(at 70% -22%,#345e622e,#0000 43%),#090b0d;place-items:center;min-height:100vh;margin:0;padding:22px;display:grid}main{background:#ffffff09;border:1px solid #ebf4f61a;border-radius:18px;width:min(520px,100%);padding:26px}.eyebrow{color:#92f3f5;letter-spacing:1.3px;font:10px Courier New,monospace}h1{letter-spacing:-.7px;margin:12px 0 8px;font-size:25px}p{color:#9da6a8;font-size:13px;line-height:1.65}button{color:#081012;cursor:pointer;background:#92f3f5;border:0;border-radius:10px;min-height:40px;margin-top:10px;padding:0 14px;font-size:12px;font-weight:700}#status{color:#a7e4bd;min-height:20px;margin-top:14px;font-size:11px}</style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">STUDYFLOW · DATA MIGRATION</div>
+    <h1>Export your existing planner</h1>
+    <p>This page reads the original StudyFlow browser database and downloads a JSON backup. Open it in the same browser profile and device where the old planner was used, then restore that file from Settings in the Android app.</p>
+    <button id="export" type="button">Export existing StudyFlow data</button>
+    <div id="status" role="status" aria-live="polite"></div>
+  </main>
+  <script>
+    const status = document.getElementById("status");
+    document.getElementById("export").addEventListener("click", () => {
+      status.textContent = "Reading your browser database…";
+      const request = indexedDB.open("studyflow-personal-planner", 1);
+      request.onerror = () => { status.textContent = "Could not open the StudyFlow database in this browser profile."; };
+      request.onsuccess = () => {
+        const database = request.result;
+        if (!database.objectStoreNames.contains("planner")) {
+          database.close();
+          status.textContent = "No existing StudyFlow planner data was found for this browser origin.";
+          return;
+        }
+        const read = database.transaction("planner", "readonly").objectStore("planner").get("main");
+        read.onerror = () => { database.close(); status.textContent = "Could not read the saved planner record."; };
+        read.onsuccess = () => {
+          database.close();
+          if (!read.result?.data) {
+            status.textContent = "No saved StudyFlow planner record was found.";
+            return;
+          }
+          const backup = { app: "STUDYFLOW", version: 1, exportedAt: new Date().toISOString(), data: read.result.data };
+          const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `studyflow-backup-${new Date().toISOString().slice(0, 10)}.json`;
+          document.body.append(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          status.textContent = "Your StudyFlow backup was exported. Keep the JSON file private.";
+        };
+      };
+    });
+  </script>
+</body>
+</html>

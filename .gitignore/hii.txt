@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.vite/
+.vscode/
+.env
+.env.local
+android/.gradle/
+android/build/
+android/app/build/
+*.log

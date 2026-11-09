@@ -1,0 +1,9 @@
+{
+  "appId": "com.studyflow.personalplanner",
+  "appName": "STUDYFLOW",
+  "webDir": "dist",
+  "backgroundColor": "#090b0d",
+  "android": {
+    "allowMixedContent": false
+  }
+}
